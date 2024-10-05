@@ -7,12 +7,10 @@ import { useRouter } from 'next/navigation'
 import { User } from '@supabase/supabase-js'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Search, Plus, Home } from 'lucide-react'
+import { Plus, Home } from 'lucide-react'
 
 export default function Dashboard() {
     const [user, setUser] = useState<User | null>(null)
-    const [searchQuery, setSearchQuery] = useState('')
     const [isLoading, setIsLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
     const router = useRouter()
@@ -61,12 +59,6 @@ export default function Dashboard() {
         }
     }
 
-    const handleSearch = (e: React.FormEvent) => {
-        e.preventDefault()
-        console.log('Searching for:', searchQuery)
-        // Implement search functionality here
-    }
-
     if (isLoading) {
         return (
             <div className="flex items-center justify-center h-screen">
@@ -94,21 +86,12 @@ export default function Dashboard() {
 
             <Card className="mb-8">
                 <CardHeader>
-                    <CardTitle>Rechercher des parcelles à louer</CardTitle>
+                    <CardTitle>Parcelles disponibles</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <form onSubmit={handleSearch} className="flex gap-2">
-                        <Input
-                            type="text"
-                            placeholder="Entrez votre recherche"
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            className="flex-grow"
-                        />
-                        <Button type="submit">
-                            <Search className="mr-2 h-4 w-4" /> Rechercher
-                        </Button>
-                    </form>
+                    <Button onClick={() => router.push('/parcels')}>
+                        Voir toutes les parcelles
+                    </Button>
                 </CardContent>
             </Card>
 
@@ -127,12 +110,12 @@ export default function Dashboard() {
             ) : (
                 <Card>
                     <CardHeader>
-                        <CardTitle>Devenir propriétaire</CardTitle>
+                        <CardTitle>Proposer une parcelle à louer</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <p className="mb-4">Vous n&apos;êtes pas encore propriétaire. Devenez propriétaire pour pouvoir louer vos parcelles.</p>
+                        <p className="mb-4">Vous n&apos;avez pas encore de parcelle à louer. Proposez votre première parcelle dès maintenant !</p>
                         <Button onClick={becomeLandlord}>
-                            <Home className="mr-2 h-4 w-4" /> Devenir propriétaire
+                            <Home className="mr-2 h-4 w-4" /> Proposer une parcelle
                         </Button>
                     </CardContent>
                 </Card>
