@@ -89,7 +89,10 @@ export async function handleAddParcelSubmit(formData: FormData): Promise<string>
       prix_par_jour: parseFloat(formData.prix_par_jour),
       date_disponibilite_debut: formData.date_disponibilite_debut,
       date_disponibilite_fin: formData.date_disponibilite_fin,
-      capacite_max: parseInt(formData.capacite_max)
+      capacite_max: parseInt(formData.capacite_max),
+      infos_generales: formData.infos_generales,
+      accessibilite: formData.accessibilite,
+      equipements: formData.equipements
     })
     .select()
 
@@ -100,21 +103,6 @@ export async function handleAddParcelSubmit(formData: FormData): Promise<string>
 
   if (!terrain || terrain.length === 0) {
     throw new Error('Erreur lors de l\'ajout du terrain: aucune donnée retournée')
-  }
-
-  // Insertion dans la table details_terrains
-  const { error: detailsError } = await supabase
-    .from('details_terrains')
-    .insert({
-      terrain_id: terrain[0].id,
-      infos_generales: formData.infos_generales,
-      accessibilite: formData.accessibilite,
-      equipements: formData.equipements
-    })
-
-  if (detailsError) {
-    console.error("Erreur détaillée lors de l'ajout des détails:", detailsError)
-    throw new Error('Erreur lors de l\'ajout des détails du terrain: ' + detailsError.message)
   }
 
   return "Parcelle ajoutée avec succès!"
