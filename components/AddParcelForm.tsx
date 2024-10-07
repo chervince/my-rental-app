@@ -11,7 +11,7 @@ import { FormData } from '@/app/types/formTypes'
 import Image from 'next/image'
 
 type AddParcelFormProps = {
-    onSubmit: (formData: FormData, image: File | null) => Promise<{ success: boolean, message: string, imageUrl?: string }>
+    onSubmit: (formData: FormData, image: File | null) => Promise<{ success: boolean; message: string; imageUrl?: string }>
 }
 
 export function AddParcelForm({ onSubmit }: AddParcelFormProps) {

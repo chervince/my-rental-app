@@ -2,7 +2,7 @@
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { FormData } from '../types/formTypes'
 
-export async function handleAddParcelSubmit(formData: FormData, image: File | null): Promise<{ success: boolean, message: string, imageUrl?: string }> {
+export async function handleAddParcelSubmit(formData: FormData, image: File | null): Promise<{ success: boolean; message: string; imageUrl?: string }> {
   const supabase = createClientComponentClient()
 
   // Vérification de la session
