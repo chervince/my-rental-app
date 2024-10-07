@@ -9,9 +9,9 @@ import { handleAddParcelSubmit } from '@/app/utils/addParcelSubmit'
 export default function AddParcelPage() {
     const router = useRouter()
 
-    const handleSubmit = async (formData: FormData) => {
+    const handleSubmit = async (formData: FormData, image: File | null) => {
         try {
-            const message = await handleAddParcelSubmit(formData)
+            const message = await handleAddParcelSubmit(formData, image)
             alert(message)
             router.push('/dashboard')
         } catch (error) {

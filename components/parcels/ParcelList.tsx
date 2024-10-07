@@ -1,7 +1,7 @@
 // components/parcels/ParcelList.tsx
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import ParcelCard from './ParcelCard'
 import { Terrain } from '@/app/types/formTypes'
@@ -23,7 +23,7 @@ export default function ParcelList() {
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc')
     const supabase = createClientComponentClient()
 
-    const fetchTerrains = async () => {
+    const fetchTerrains = useCallback(async () => {
         try {
             setIsLoading(true)
             const startIndex = (currentPage - 1) * ITEMS_PER_PAGE
@@ -31,7 +31,10 @@ export default function ParcelList() {
 
             let query = supabase
                 .from('terrains')
-                .select('*', { count: 'exact' })
+                .select(`
+    *,
+    image_mise_en_avant:images!terrains_image_mise_en_avant_id_fkey(id, url, legende)
+  `, { count: 'exact' })
                 .range(startIndex, endIndex)
 
             if (priceFilter) {
@@ -46,21 +49,7 @@ export default function ParcelList() {
 
             if (supabaseError) throw supabaseError
 
-            // Récupérer les images pour chaque terrain
-            const terrainsWithImages = await Promise.all(terrainsData.map(async (terrain) => {
-                const { data: images } = await supabase
-                    .from('images')
-                    .select('*')
-                    .eq('terrain_id', terrain.id)
-
-                return {
-                    ...terrain,
-                    images: images || [],
-                    image_mise_en_avant: images?.find(img => img.id === terrain.image_mise_en_avant_id) || null
-                }
-            }))
-
-            setTerrains(terrainsWithImages)
+            setTerrains(terrainsData)
             setTotalCount(count || 0)
         } catch (error) {
             console.error('Erreur lors de la récupération des terrains:', error)
@@ -68,11 +57,11 @@ export default function ParcelList() {
         } finally {
             setIsLoading(false)
         }
-    }
+    }, [currentPage, priceFilter, capacityFilter, sortBy, sortOrder, supabase])
 
     useEffect(() => {
         fetchTerrains()
-    }, [currentPage, priceFilter, capacityFilter, sortBy, sortOrder])
+    }, [fetchTerrains])
 
     const totalPages = Math.ceil(totalCount / ITEMS_PER_PAGE)
 

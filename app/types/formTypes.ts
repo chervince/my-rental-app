@@ -10,15 +10,12 @@ export type FormData = {
   date_disponibilite_debut: string
   date_disponibilite_fin: string
   capacite_max: string
-  infos_generales: string
-  accessibilite: string
-  equipements: string
 }
 
 export type Terrain = {
   id: string
   titre: string
-  description: string
+  description?: string // Rendu optionnel
   emplacement: string
   latitude: number
   longitude: number
@@ -26,20 +23,17 @@ export type Terrain = {
   date_disponibilite_debut: string
   date_disponibilite_fin: string
   capacite_max: number
-  infos_generales: string
-  accessibilite: string
-  equipements: string
   proprietaire_id: string
-  politique_annulation_id: string | null
+  politique_annulation_id?: string | null // Rendu optionnel
   date_creation: string
-  image_mise_en_avant_id: string | null
+  image_mise_en_avant_id?: string | null // Rendu optionnel
   images?: Image[]
   image_mise_en_avant?: Image | null
 }
 
 export type Image = {
   id: string
-  terrain_id: string
+  terrain_id: string | null
   url: string
   legende: string | null
   ordre_affichage: number | null
