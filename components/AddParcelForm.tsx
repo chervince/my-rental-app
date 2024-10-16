@@ -19,12 +19,7 @@ export function AddParcelForm({ onSubmit }: AddParcelFormProps) {
         titre: '',
         description: '',
         emplacement: '',
-        latitude: '',
-        longitude: '',
         prix_par_jour: '',
-        date_disponibilite_debut: '',
-        date_disponibilite_fin: '',
-        capacite_max: ''
     })
     const [image, setImage] = useState<File | null>(null)
     const [imagePreview, setImagePreview] = useState<string | null>(null)
@@ -52,23 +47,18 @@ export function AddParcelForm({ onSubmit }: AddParcelFormProps) {
             const result = await onSubmit(formData, image)
             setSubmitMessage(result.message)
             if (result.success) {
-                // Réinitialiser le formulaire si l'ajout est réussi
                 setFormData({
                     titre: '',
                     description: '',
                     emplacement: '',
-                    latitude: '',
-                    longitude: '',
                     prix_par_jour: '',
-                    date_disponibilite_debut: '',
-                    date_disponibilite_fin: '',
-                    capacite_max: ''
                 })
                 setImage(null)
                 setImagePreview(null)
             }
         } catch (error) {
-            setSubmitMessage("Une erreur est survenue lors de l'ajout de la parcelle.")
+            console.error('Erreur lors de l\'ajout de la parcelle:', error)
+            setSubmitMessage(error instanceof Error ? error.message : "Une erreur inconnue est survenue lors de l'ajout de la parcelle.")
         } finally {
             setIsSubmitting(false)
         }
@@ -93,53 +83,9 @@ export function AddParcelForm({ onSubmit }: AddParcelFormProps) {
                         <Label htmlFor="emplacement">Emplacement</Label>
                         <Input id="emplacement" name="emplacement" value={formData.emplacement} onChange={handleChange} required />
                     </div>
-                    <div className="grid grid-cols-2 gap-4">
-                        <div>
-                            <Label htmlFor="latitude">Latitude</Label>
-                            <Input
-                                id="latitude"
-                                name="latitude"
-                                type="number"
-                                step="any"
-                                min="-90"
-                                max="90"
-                                value={formData.latitude}
-                                onChange={handleChange}
-                                required
-                            />
-                        </div>
-                        <div>
-                            <Label htmlFor="longitude">Longitude</Label>
-                            <Input
-                                id="longitude"
-                                name="longitude"
-                                type="number"
-                                step="any"
-                                min="-180"
-                                max="180"
-                                value={formData.longitude}
-                                onChange={handleChange}
-                                required
-                            />
-                        </div>
-                    </div>
                     <div>
                         <Label htmlFor="prix_par_jour">Prix par jour</Label>
                         <Input id="prix_par_jour" name="prix_par_jour" type="number" step="0.01" value={formData.prix_par_jour} onChange={handleChange} required />
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
-                        <div>
-                            <Label htmlFor="date_disponibilite_debut">Date de disponibilité (début)</Label>
-                            <Input id="date_disponibilite_debut" name="date_disponibilite_debut" type="date" value={formData.date_disponibilite_debut} onChange={handleChange} required />
-                        </div>
-                        <div>
-                            <Label htmlFor="date_disponibilite_fin">Date de disponibilité (fin)</Label>
-                            <Input id="date_disponibilite_fin" name="date_disponibilite_fin" type="date" value={formData.date_disponibilite_fin} onChange={handleChange} required />
-                        </div>
-                    </div>
-                    <div>
-                        <Label htmlFor="capacite_max">Capacité maximale</Label>
-                        <Input id="capacite_max" name="capacite_max" type="number" value={formData.capacite_max} onChange={handleChange} required />
                     </div>
                     <div>
                         <Label htmlFor="image">Image mise en avant</Label>
