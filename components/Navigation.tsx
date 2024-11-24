@@ -1,4 +1,3 @@
-//components/Navigation.tsx
 'use client'
 
 import Link from 'next/link'
@@ -29,6 +28,9 @@ export default function Navigation() {
                             <>
                                 <Link href="/dashboard" className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
                                     Tableau de bord
+                                </Link>
+                                <Link href="/parcels" className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                                    Parcelles
                                 </Link>
                                 <button onClick={handleLogout} className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
                                     Déconnexion
